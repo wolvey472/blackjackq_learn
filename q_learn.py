@@ -17,8 +17,8 @@ from collections import defaultdict
 
 from blackjack import draw_card, get_state, hand_total, step
 
-EPISODES = 1_000_000
-ALPHA = 0.001
+EPISODES = 200_000
+ALPHA = 0.1
 GAMMA = 1.0
 ACTIONS = ("hit", "stand")
 
@@ -106,12 +106,12 @@ if __name__ == "__main__":
     print(f"Training on {EPISODES:,} games...")
     q_table = train()
     results = evaluate(q_table)
-    print("\nResults from 10,000 NEW games (learning switched off):")
+    print("\nResults from 10,000 NEW games (learning switched off) Alpha = ", ALPHA )
+    print("EPISODES = ", EPISODES)
     for outcome, count in results.items():
         print(f"  {outcome.title()}: {count:,} ({count / 100:.1f}%)")
 
-    for _ in range(3):
-        show_game(q_table)
+   
 
 
 
