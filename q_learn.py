@@ -17,8 +17,8 @@ from collections import defaultdict
 
 from blackjack import draw_card, get_state, hand_total, step
 
-EPISODES = 200_000
-ALPHA = 0.5
+EPISODES = 1_000_000
+ALPHA = 0.001
 GAMMA = 1.0
 ACTIONS = ("hit", "stand")
 
@@ -81,6 +81,37 @@ def evaluate(q_table, games=10_000):
         else:
             results["ties"] += 1
     return results
+
+
+def show_game(q_table):
+    
+    dl_cards, pl_cards = draw_card()
+    print("\nPlayer cards:", pl_cards)
+    print("Dealer shows:", dl_cards[0])
+    state = get_state(dl_cards, pl_cards)
+    done = False
+    while not done:
+        action = best_action(q_table, state)
+        print(f"State {state}: AI chooses {action}")
+        state, reward, done = step(dl_cards, pl_cards, action)
+        if action == "hit":
+            print(f"Drew {pl_cards[-1]}; player total: {hand_total(pl_cards)}")
+
+    print(f"Player: {pl_cards} = {hand_total(pl_cards)}")
+    print(f"Dealer: {dl_cards} = {hand_total(dl_cards)}")
+    print({1: "AI wins!", -1: "AI loses.", 0: "Tie."}[reward])
+
+
+if __name__ == "__main__":
+    print(f"Training on {EPISODES:,} games...")
+    q_table = train()
+    results = evaluate(q_table)
+    print("\nResults from 10,000 NEW games (learning switched off):")
+    for outcome, count in results.items():
+        print(f"  {outcome.title()}: {count:,} ({count / 100:.1f}%)")
+
+    for _ in range(3):
+        show_game(q_table)
 
 
 
