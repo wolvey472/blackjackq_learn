@@ -5,17 +5,17 @@
 import random as rd
 
 cards = ["spades", "clubs", "hearts", "diamonds"]
+ranks = ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+         "jack", "queen", "king"]
 
 def draw_card():
     pl_cards = []
     dl_cards = []
 
     for i in range(4):
-        num = rd.randint(1,10)
-        if num == 1:
-            num = str("ace")
+        num = rd.choice(ranks)
         mod = rd.choice(cards)
-        card = str(num) +" of " + mod
+        card = num + " of " + mod
         print(card)
         
         if len(dl_cards) == 0 and len(pl_cards) == 0:
@@ -42,6 +42,8 @@ def hand_total(hand):
         if rank == "ace":
             aces += 1
             total += 11
+        elif rank in ("jack", "queen", "king"):
+            total += 10
         else:
             total += int(rank)
     # demote aces from 11 to 1 while we are busted
