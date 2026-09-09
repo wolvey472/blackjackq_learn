@@ -31,7 +31,29 @@ def draw_card():
         
 
     print(dl_cards, pl_cards)
+    score(dl_cards=dl_cards, pl_cards=pl_cards)
     return dl_cards, pl_cards
-       
+
+def hand_total(hand):
+    total = 0
+    aces = 0
+    for card in hand:
+        rank = card.split(" ")[0]
+        if rank == "ace":
+            aces += 1
+            total += 11
+        else:
+            total += int(rank)
+    # demote aces from 11 to 1 while we are busted
+    while total > 21 and aces > 0:
+        total -= 10
+        aces -= 1
+    return total
+
+def score(dl_cards, pl_cards):
+    dl_score = hand_total(dl_cards)
+    pl_score = hand_total(pl_cards)
+    print(pl_score, dl_score)
+    return dl_score, pl_score
 
 draw_card()
