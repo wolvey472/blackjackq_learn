@@ -55,7 +55,9 @@ def hand_total(hand):
 def score(dl_cards, pl_cards):
     dl_score = hand_total(dl_cards)
     pl_score = hand_total(pl_cards)
-    print(pl_score, dl_score)
+    print("player: ", pl_score)
+    print("dealer: ", dl_score)
+
     return dl_score, pl_score
 
 draw_card()
