@@ -63,6 +63,26 @@ def train(episodes=EPISODES):
 
     return q_table
 
+def evaluate(q_table, games=10_000):
+    results = {"wins":0, "losses":0, "ties":0}
+
+    for x in range(games):
+        dl_cards, pl_cards = draw_card()
+        state = get_state(dl_cards=dl_cards, pl_cards=pl_cards)
+        done = False # could use is False
+        while not done:
+            action = best_action(q_table, state)
+            state, reward, done = step(dl_cards, pl_cards, action)
+
+        if reward == 1:
+            results['wins'] += 1
+        elif reward == -1:
+            results['losses'] +=1
+        else:
+            results["ties"] += 1
+    return results
+
+
 
 
 
