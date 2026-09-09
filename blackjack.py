@@ -22,13 +22,10 @@ def draw_card():
     for i in range(2):
         pl_cards.append(draw_one_card())
         dl_cards.append(draw_one_card())
-        
-
-    print(dl_cards, pl_cards)
-    score(dl_cards=dl_cards, pl_cards=pl_cards)
+    
     return dl_cards, pl_cards
 
-def hand_total(hand):
+def hand_details(hand):
     total = 0
     aces = 0
     for card in hand:
@@ -44,14 +41,58 @@ def hand_total(hand):
     while total > 21 and aces > 0:
         total -= 10
         aces -= 1
-    return total
+       
+    return total, aces > 0
+# check return
+
+def hand_total(hand):
+    return hand_details(hand)[0]
 
 def score(dl_cards, pl_cards):
-    dl_score = hand_total(dl_cards)
-    pl_score = hand_total(pl_cards)
+    dl_score = hand_details(dl_cards)
+    pl_score = hand_details(pl_cards)
     print("player: ", pl_score)
     print("dealer: ", dl_score)
 
     return dl_score, pl_score
 
-draw_card()
+
+def get_state(dl_cards, pl_cards):
+    
+    player_total, usable_ace = hand_details(pl_cards)
+    dealer_upcard = hand_total([dl_cards[0]])
+    return player_total, dealer_upcard, usable_ace
+
+
+def step(dl_cards, pl_cards, action):
+
+    if action == "hit":
+        pl_cards.append(draw_one_card())
+        if hand_total(pl_cards) > 21:
+            return get_state(dl_cards, pl_cards), -1, True
+        return get_state(dl_cards, pl_cards), 0, False
+
+    if action != "stand":
+        raise ValueError("Action must be 'hit' or 'stand'.")
+
+    while hand_total(dl_cards) < 17:
+        dl_cards.append(draw_one_card())
+
+    dealer_total = hand_total(dl_cards)
+    player_total = hand_total(pl_cards)
+    if dealer_total > 21 or player_total > dealer_total:
+        reward = 1
+    elif player_total < dealer_total:
+        reward = -1
+    else:
+        reward = 0
+    return get_state(dl_cards, pl_cards), reward, True
+
+
+if __name__ == "__main__":
+    # This runs only when you run blackjack.py directly, not when importing it.
+    dealer, player = draw_card()
+    print("Player cards:", player)
+    print("Dealer cards:", dealer)
+    score(dealer, player)
+
