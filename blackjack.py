@@ -8,26 +8,20 @@ cards = ["spades", "clubs", "hearts", "diamonds"]
 ranks = ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
          "jack", "queen", "king"]
 
+
+
+def draw_one_card():
+  
+    return rd.choice(ranks) + " of " + rd.choice(cards)
+
+
 def draw_card():
     pl_cards = []
     dl_cards = []
 
-    for i in range(4):
-        num = rd.choice(ranks)
-        mod = rd.choice(cards)
-        card = num + " of " + mod
-        print(card)
-        
-        if len(dl_cards) == 0 and len(pl_cards) == 0:
-            pl_cards.append(card)
-            continue
-        if len(dl_cards) == 0 and len(pl_cards) == 1:
-            dl_cards.append(card)
-            continue
-        if len(dl_cards) == 1 and len(pl_cards) == 1:
-            pl_cards.append(card)
-        else:
-            dl_cards.append(card)
+    for i in range(2):
+        pl_cards.append(draw_one_card())
+        dl_cards.append(draw_one_card())
         
 
     print(dl_cards, pl_cards)
