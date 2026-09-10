@@ -3,7 +3,8 @@
 **Author: Carson Shae**  
 **My first Q-learning project**
 
-This project combines a Python blackjack game with a Q-learning agent that learns when to hit or stand through repeated games. The project explores how the learning rate and number of training episodes affect the agent's performance.
+This project combines a Python blackjack game with a Q-learning agent that learns when to hit or stand through repeated games. The project explores how the learning rate and number of training episodes affect the agent's performance.  Rules are at the bottom of the page.
+
 
 ## Project files
 
